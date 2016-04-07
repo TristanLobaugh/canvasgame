@@ -1,15 +1,16 @@
 var gobSpeed = 1;
 var score = 0;
-var highScore = 0;
 var timer = 60;
 var goblinVectorX = 0;
 var goblinVectorY = 0;
-
-highscore = localStorage.getItem("highScore");
+var highScore = localStorage.getItem("highScore");
 if(typeof(highScore) === undefined){
-	highscore = 0;
+	highScore = 0;
+	document.getElementById("high-score").innerHTML = "High Score: " + highScore;
+}else{
+	document.getElementById("high-score").innerHTML = "High Score: " + highScore;
 }
-localStorage.setItem("highScore", highScore); //include in collision 
+
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
@@ -67,7 +68,12 @@ function updateHero(){
 		goblinLoc.x = Math.floor(Math.random()*canvas.width);
 		goblinLoc.y = Math.floor(Math.random()*canvas.height);
 		gobSpeed += 0.5;
-		console.log("speed="+gobSpeed);
+		if(score > highScore){
+			highScore = score;
+			localStorage.setItem("highScore", highScore);
+		}
+		document.getElementById("wins").innerHTML = "Score: " + score;
+		document.getElementById("high-score").innerHTML = "High Score: " + highScore;
 	}
 }
 setInterval(function(){
