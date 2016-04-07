@@ -2,91 +2,13 @@
 <html>
 <head>
 	<title>Canvas Game</title>
+	
 </head>
 <body>
 
 <canvas id="canvas"></canvas>"
 
-<script type="text/javascript">
-	
-var canvas = document.getElementById("canvas");
 
-var context = canvas.getContext("2d");
-
-canvas.width = 512;
-canvas.height = 480;
-
-
-
-var bgImage = new Image();
-bgImage.src = "background.png";
-
-var hero = new Image();
-hero.src = "hero.png";
-var heroLoc ={
-	x: 100,
-	y: 100
-}
-
-var goblin = new Image();
-goblin.src = "monster.png";
-var goblinLoc ={
-	x: 100,
-	y: 150
-}
-
-var keysDown = [];
-addEventListener("keydown", function(event){
-	keysDown[event.keyCode] = true
-});
-
-addEventListener("keyup", function(event){
-	delete keysDown[event.keyCode];
-});
-
-var update = function(){
-	if(38 in keysDown){
-		if(heroLoc.y > 40){
-			heroLoc.y -= 10;
-		}
-	}
-	if(40 in keysDown){
-		if(heroLoc.y < 410){
-			heroLoc.y += 10;
-		}
-	}
-	if(37 in keysDown){
-		if(heroLoc.x > 40 ){
-			heroLoc.x -= 10;
-		}
-	}
-	if(39 in keysDown){
-		if(heroLoc.x < 442){
-			heroLoc.x += 10;
-		}
-	}
-	console.log(heroLoc.y + " " + goblinLoc.y)
-	if(
-		heroLoc.x >= (goblinLoc.x - 20) 
-		&& heroLoc.x <= (goblinLoc.x + 20) 
-		&& heroLoc.y >= (goblinLoc.y - 20) 
-		&& heroLoc.y <= (goblinLoc.y + 20))
-		{
-		console.log("collision");
-	}
-}
-
-function draw(){
-	context.drawImage(bgImage, 0, 0);
-	context.drawImage(hero, heroLoc.x, heroLoc.y);
-	context.drawImage(goblin, goblinLoc.x, goblinLoc.y);
-	update();
-	requestAnimationFrame(draw);
-}
-
-draw();
-
-</script>
-
+<script type="text/javascript" src="js/scripts.js"></script>
 </body>
 </html>
