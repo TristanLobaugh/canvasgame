@@ -1,8 +1,15 @@
 var gobSpeed = 1;
 var score = 0;
+var highScore = 0;
 var timer = 60;
 var goblinVectorX = 0;
 var goblinVectorY = 0;
+
+highscore = localStorage.getItem("highScore");
+if(typeof(highScore) === undefined){
+	highscore = 0;
+}
+localStorage.setItem("highScore", highScore); //include in collision 
 
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
@@ -93,5 +100,6 @@ function draw(){
 	updateGoblin();
 	requestAnimationFrame(draw);
 }
+
 
 draw();
