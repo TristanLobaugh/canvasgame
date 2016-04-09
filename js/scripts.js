@@ -114,6 +114,8 @@ setInterval(function(){
 		document.getElementById("timer").innerHTML = "Time Left: " + timer;
 		if(timer === 0){
 			gameActive = false;
+			document.getElementById("scoreboard").classList.add("red");
+			document.getElementById("scoreboard").classList.remove("green");
 		}
 		if(timer%10 === 0){
 			zombies.push(new Zombie());
