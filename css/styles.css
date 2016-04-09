@@ -1,0 +1,33 @@
+.game-wrapper{
+	text-align: center;
+	width: 964px;
+}
+.scoreboard{
+	font-size: 30px;
+	padding: 5px;
+}
+#wins{
+	float: left;
+}
+#high-score{
+	float: right;
+}
+#timer{
+	display: inline;
+}
+#reset-btn{
+	background-color: blue;
+	color: white;
+	border: 1px solid black;
+	border-radius: 5px;
+	font-size: 20px;
+	margin-left: 100px;
+	padding: 2px;
+	cursor: pointer;
+}
+.red{
+	background-color: red;
+}
+.green{
+	background-color: green;
+}

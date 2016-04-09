@@ -1,12 +1,10 @@
 var gobSpeed = 1;
 var zomSpeed = 1;
-var score = 0;
-var timer = 60;
 var goblinVectorX = 0;
 var goblinVectorY = 0;
 var zombieVectorX = 0;
 var zombieVectorY = 0;
-zombies = [];
+var gameActive = true;
 var highScore = localStorage.getItem("highScore");
 if(highScore === null){
 	highScore = 0;
@@ -30,19 +28,21 @@ var bgImage3 = new Image();
 bgImage3.src = "background3.png";
 var bgImage4 = new Image();
 bgImage4.src = "background4.png";
+
 var hero = new Image();
 hero.src = "hero.png";
-var heroLoc ={
+var heroLoc = {
 	x: 482,
 	y: 447
 }
 
 var goblin = new Image();
 goblin.src = "monster.png";
-var goblinLoc ={
+var goblinLoc = {
 	x: Math.floor(Math.random()*canvas.width),
 	y: Math.floor(Math.random()*canvas.height)
 }
+
 var keysDown = [];
 addEventListener("keydown", function(event){
 	keysDown[event.keyCode] = true
@@ -86,6 +86,7 @@ function updateHero(){
 		document.getElementById("high-score").innerHTML = "High Score: " + highScore;
 	}
 }
+
 setInterval(function(){
 	goblinVectorX =	((Math.ceil(Math.random()*3))-2)*gobSpeed;
 	goblinVectorY = ((Math.ceil(Math.random()*3))-2)*gobSpeed;
@@ -108,9 +109,15 @@ function updateGoblin(){
 	}
 }
 setInterval(function(){
-	timer -= 1;
-	if(timer%10 === 0){
-		zombies.push(new Zombie());
+	if(gameActive === true){
+		timer -= 1;
+		document.getElementById("timer").innerHTML = "Time Left: " + timer;
+		if(timer === 0){
+			gameActive = false;
+		}
+		if(timer%10 === 0){
+			zombies.push(new Zombie());
+		}
 	}
 }, 1000)
 
@@ -143,24 +150,52 @@ function updateZombie(){
 	for(var i = 0; i < zombies.length; i++){
 		zombies[i].zombieLocX += zombies[i].zombieVectorX;
 		zombies[i].zombieLocY += zombies[i].zombieVectorY;
+		if(heroLoc.x >= (zombies[i].zombieLocX - 20) && heroLoc.x <= (zombies[i].zombieLocX + 20) && heroLoc.y >= (zombies[i].zombieLocY - 20) && heroLoc.y <= (zombies[i].zombieLocY + 20)){
+			gameActive = false;
+			document.getElementById("scoreboard").classList.add("red");
+			document.getElementById("scoreboard").classList.remove("green");
+		}
 	}
 }
 
 function draw(){
-	context.drawImage(bgImage1, 0, 0);
-	context.drawImage(bgImage2, 482, 0);
-	context.drawImage(bgImage3, 482, 447);
-	context.drawImage(bgImage4, 0, 447);
-	context.drawImage(hero, heroLoc.x, heroLoc.y);
-	context.drawImage(goblin, goblinLoc.x, goblinLoc.y);
-	for(var i = 0; i < zombies.length; i++){
-		context.drawImage(zombies[i].zombie, zombies[i].zombieLocX, zombies[i].zombieLocY);
-	}	
-	updateHero();
-	updateGoblin();
-	updateZombie();
-	requestAnimationFrame(draw);
+	console.log(gameActive);
+	if(gameActive === true){
+		context.drawImage(bgImage1, 0, 0);
+		context.drawImage(bgImage2, 482, 0);
+		context.drawImage(bgImage3, 482, 447);
+		context.drawImage(bgImage4, 0, 447);
+		context.drawImage(hero, heroLoc.x, heroLoc.y);
+		context.drawImage(goblin, goblinLoc.x, goblinLoc.y);
+		for(var i = 0; i < zombies.length; i++){
+			context.drawImage(zombies[i].zombie, zombies[i].zombieLocX, zombies[i].zombieLocY);
+		}	
+		updateHero();
+		updateGoblin();
+		updateZombie();
+		requestAnimationFrame(draw);
+	}
 }
 
+function reset(){
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	zombies = [];
+	heroLoc.x = 482;
+	heroLoc.y = 447;
+	gobSpeed = 1;
+	zomSpeed = 1;
+	goblinLoc.x = Math.floor(Math.random()*canvas.width);
+	goblinLoc.y = Math.floor(Math.random()*canvas.height);
+	timer = 60;
+	score = 0;
+	if(gameActive === false){
+		document.getElementById("scoreboard").classList.add("green");
+		document.getElementById("scoreboard").classList.remove("red");
+		gameActive = true;
+		draw();
+	}
+}
 
+reset();
 draw();
+

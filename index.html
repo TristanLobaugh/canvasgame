@@ -3,29 +3,19 @@
 <head>
 	<title>Canvas Game</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-<style type="text/css">
-	.game-wrapper{
-		text-align: center;
-	}
-	#wins{
-		float: left;
-	}
-	#high-score{
-		float: right;
-	}
-
-</style>
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
 
 </head>
 <body>
 	<div class="container">
 		<div class="game-wrapper">
 			<div class="game-field">
-				<div class="scoreboard-header">Scoreboard</div>
-				<div id="wins">Score: 0</div>
-				<div id="high-score">High Score: 0</div>
-				<div id="timer">Time Left: 60</div>
+				<div id="scoreboard" class="scoreboard green">
+					<div id="wins">Score: 0</div>
+					<div id="high-score">High Score: 0</div>
+					<div id="timer">Time Left: 60</div>
+					<span id="reset-btn" onclick="reset()">Reset</span>
+				</div>
 				<canvas  id="canvas"></canvas>
 			</div>
 		</div>
