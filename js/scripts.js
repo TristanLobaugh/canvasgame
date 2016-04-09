@@ -33,16 +33,10 @@ bgImage4.src = "background4.png";
 var hero = new Image();
 hero.src = "hero.png";
 var heroLoc ={
-	x: 240,
-	y: 224
+	x: 482,
+	y: 447
 }
 
-var zombie = new Image();
-zombie.src = "zombie.png";
-var zombieLoc ={
-	x: 500,
-	y: 500
-}
 var goblin = new Image();
 goblin.src = "monster.png";
 var goblinLoc ={
@@ -83,6 +77,7 @@ function updateHero(){
 		goblinLoc.x = Math.floor(Math.random()*canvas.width);
 		goblinLoc.y = Math.floor(Math.random()*canvas.height);
 		gobSpeed += 0.5;
+		zomSpeed += 0.5;
 		if(score > highScore){
 			highScore = score;
 			localStorage.setItem("highScore", highScore);
@@ -112,25 +107,43 @@ function updateGoblin(){
 		goblinLoc.y = 16;
 	}
 }
+setInterval(function(){
+	timer -= 1;
+	if(timer%10 === 0){
+		zombies.push(new Zombie());
+	}
+}, 1000)
+
+function Zombie(){
+		this.zombie = new Image();
+		this.zombie.src = "zombie.png";
+		this.zombieLocX = Math.floor(Math.random()*canvas.width);
+		this.zombieLocY = Math.floor(Math.random()*canvas.height);
+		this.zombieVectorX;
+		this.zombieVectorY;
+
+}
 
 setInterval(function(){
-	if(zombieLoc.x < heroLoc.x){
-		zombieVectorX =	1 * zomSpeed;
-	}else if(zombieLoc.x > heroLoc.x){
-		zombieVectorX = -1 * zomSpeed;
+	for(var i = 0; i < zombies.length; i++){
+		if(zombies[i].zombieLocX < heroLoc.x){
+			zombies[i].zombieVectorX =	1 * zomSpeed * ((Math.floor(Math.random()*11))*0.1);
+		}else if(zombies[i].zombieLocX > heroLoc.x){
+			zombies[i].zombieVectorX = -1 * zomSpeed * ((Math.floor(Math.random()*11))*0.1);
+		}
+		if(zombies[i].zombieLocY < heroLoc.y){
+			zombies[i].zombieVectorY =	1 * zomSpeed * ((Math.floor(Math.random()*11))*0.1);
+		}else if(zombies[i].zombieLocY > heroLoc.y){
+			zombies[i].zombieVectorY = -1 * zomSpeed * ((Math.floor(Math.random()*11))*0.1);
+		}
 	}
-
-	if(zombieLoc.y < heroLoc.y){
-		zombieVectorY =	1 * zomSpeed;
-	}else if(zombieLoc.y > heroLoc.y){
-		zombieVectorY = -1 * zomSpeed;
-	}
-	console.log(zombieVectorX + " " + zombieVectorY);
 }, 500);
 
 function updateZombie(){
-	zombieLoc.x += zombieVectorX;
-	zombieLoc.y += zombieVectorY;
+	for(var i = 0; i < zombies.length; i++){
+		zombies[i].zombieLocX += zombies[i].zombieVectorX;
+		zombies[i].zombieLocY += zombies[i].zombieVectorY;
+	}
 }
 
 function draw(){
@@ -140,7 +153,9 @@ function draw(){
 	context.drawImage(bgImage4, 0, 447);
 	context.drawImage(hero, heroLoc.x, heroLoc.y);
 	context.drawImage(goblin, goblinLoc.x, goblinLoc.y);
-	context.drawImage(zombie, zombieLoc.x, zombieLoc.y);
+	for(var i = 0; i < zombies.length; i++){
+		context.drawImage(zombies[i].zombie, zombies[i].zombieLocX, zombies[i].zombieLocY);
+	}	
 	updateHero();
 	updateGoblin();
 	updateZombie();

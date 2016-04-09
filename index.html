@@ -7,7 +7,12 @@
 <style type="text/css">
 	.game-wrapper{
 		text-align: center;
-		
+	}
+	#wins{
+		float: left;
+	}
+	#high-score{
+		float: right;
 	}
 
 </style>
@@ -17,9 +22,10 @@
 	<div class="container">
 		<div class="game-wrapper">
 			<div class="game-field">
-				<div class="scoreboard">Scoreboard</div>
+				<div class="scoreboard-header">Scoreboard</div>
 				<div id="wins">Score: 0</div>
 				<div id="high-score">High Score: 0</div>
+				<div id="timer">Time Left: 60</div>
 				<canvas  id="canvas"></canvas>
 			</div>
 		</div>
