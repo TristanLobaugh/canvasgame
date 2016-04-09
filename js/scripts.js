@@ -8,7 +8,7 @@ var zombieVectorX = 0;
 var zombieVectorY = 0;
 zombies = [];
 var highScore = localStorage.getItem("highScore");
-if(typeof(highScore) === undefined){
+if(highScore === null){
 	highScore = 0;
 	document.getElementById("high-score").innerHTML = "High Score: " + highScore;
 }else{
