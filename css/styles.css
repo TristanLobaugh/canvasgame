@@ -9,6 +9,10 @@
 #wins{
 	float: left;
 }
+#bombs{
+	float: left;
+	margin-left: 20px;
+}
 #high-score{
 	float: right;
 }

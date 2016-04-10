@@ -126,7 +126,7 @@ setInterval(function(){
 		for(var k = 0; k < bombs.length; k++){
 			bombs[k].bombLife--;
 			if(bombs[k].bombLife <= 0){
-				explosion(bombs[k]);
+				bombExplode(bombs[k]);
 				bombs.splice(k, 1);
 			}
 		}
@@ -162,6 +162,7 @@ function updateBomb(){
 		if(bombs.length === 0 && bombInv > 0){
 			bombs.push(new Bomb());
 			bombInv--;
+			document.getElementById("bombs-inv").innerHTML =  bombInv;
 		}
 	}
 }
@@ -171,16 +172,40 @@ function Bomb(){
 	this.bomb.src = "img/bomb.png";
 	this.bombLocX = heroLoc.x;
 	this.bombLocY = heroLoc.y;
-	this.bombLife = 3;
+	this.bombLife = 2;
 }
 
-function explosion(bomb){
+function bombExplode(bomb){
 	for(var i = 0; i < zombies.length; i++){
 		if(bomb.bombLocX >= (zombies[i].zombieLocX - 100) && bomb.bombLocX <= (zombies[i].zombieLocX + 100) && bomb.bombLocY >= (zombies[i].zombieLocY - 100) && bomb.bombLocY <= (zombies[i].zombieLocY + 100)){
 			zombies.splice(i, 1);
 		}
 	}
+	explosions.push(new Explosion(bomb.bombLocX, bomb.bombLocY));
 }
+
+function Explosion(x, y){
+	this.explosion = new Image();
+	this.explosion.src = "img/explosion.png";
+	this.imgCount = 0;
+	this.imgX;
+	this.imgY;
+	this.explosionLocX = x - 30;
+	this.explosionLocY = y - 50;
+}
+
+function updateExplosion(){
+	for(var i = 0; i < explosions.length; i++){
+		if(explosions[i].imgCount < 15){	
+			explosions[i].imgX = (explosions[i].imgCount % 5) * 96;
+			explosions[i].imgY = Math.floor(explosions[i].imgCount / 5) * 96;
+			explosions[i].imgCount++
+		}else{
+			explosions.splice(i, 1);
+		}
+	}
+}
+
 
 function Zombie(){
 	this.zombie = new Image();
@@ -189,7 +214,6 @@ function Zombie(){
 	this.zombieLocY = Math.floor(Math.random()*canvas.height);
 	this.zombieVectorX;
 	this.zombieVectorY;
-
 }
 
 setInterval(function(){
@@ -230,6 +254,9 @@ function draw(){
 		for(var i = 0; i < bombs.length; i++){
 			context.drawImage(bombs[i].bomb, bombs[i].bombLocX, bombs[i].bombLocY);
 		}
+		for(var i = 0; i < explosions.length; i++){
+			context.drawImage(explosions[i].explosion, explosions[i].imgX, explosions[i].imgY, 96, 96, explosions[i].explosionLocX, explosions[i].explosionLocY, 96, 96);
+		}
 		for(var i = 0; i < clocks.length; i++){
 			context.drawImage(clocks[i].clock, clocks[i].clockLocX, clocks[i].clockLocY);
 		}	
@@ -237,7 +264,8 @@ function draw(){
 			context.drawImage(zombies[i].zombie, zombies[i].zombieLocX, zombies[i].zombieLocY);
 		}
 		updateClock();
-		updateBomb();	
+		updateBomb();
+		updateExplosion();	
 		updateHero();
 		updateGoblin();
 		updateZombie();
@@ -250,7 +278,9 @@ function reset(){
 	clocks = [];
 	zombies = [];
 	bombs = [];
+	explosions = [];
 	bombInv = 3;
+	document.getElementById("bombs-inv").innerHTML =  bombInv;
 	heroLoc.x = 482;
 	heroLoc.y = 447;
 	gobSpeed = 1;
@@ -258,7 +288,9 @@ function reset(){
 	goblinLoc.x = Math.floor(Math.random()*canvas.width);
 	goblinLoc.y = Math.floor(Math.random()*canvas.height);
 	timer = 60;
+	document.getElementById("timer").innerHTML = "Time Left: " + timer;
 	score = 0;
+	document.getElementById("wins").innerHTML = "Score: " + score;
 	if(gameActive === false){
 		document.getElementById("scoreboard").classList.add("green");
 		document.getElementById("scoreboard").classList.remove("red");
