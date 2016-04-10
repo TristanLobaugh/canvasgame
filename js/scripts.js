@@ -123,6 +123,13 @@ setInterval(function(){
 				clocks.splice(j, 1);
 			}
 		}
+		for(var k = 0; k < bombs.length; k++){
+			bombs[k].bombLife--;
+			if(bombs[k].bombLife <= 0){
+				explosion(bombs[k]);
+				bombs.splice(k, 1);
+			}
+		}
 		clockSpawnChance = Math.ceil(Math.random()*15);  
 		if(clockSpawnChance === 1){
 			clocks.push(new Clock());
@@ -146,6 +153,31 @@ function updateClock(){
 		if(heroLoc.x >= (clocks[i].clockLocX - 20) && heroLoc.x <= (clocks[i].clockLocX + 20) && heroLoc.y >= (clocks[i].clockLocY - 20) && heroLoc.y <= (clocks[i].clockLocY + 20)){
 			timer += 20;
 			clocks.splice(i, 1);
+		}
+	}
+}
+
+function updateBomb(){
+	if(32 in keysDown){
+		if(bombs.length === 0 && bombInv > 0){
+			bombs.push(new Bomb());
+			bombInv--;
+		}
+	}
+}
+
+function Bomb(){
+	this.bomb = new Image();
+	this.bomb.src = "img/bomb.png";
+	this.bombLocX = heroLoc.x;
+	this.bombLocY = heroLoc.y;
+	this.bombLife = 3;
+}
+
+function explosion(bomb){
+	for(var i = 0; i < zombies.length; i++){
+		if(bomb.bombLocX >= (zombies[i].zombieLocX - 100) && bomb.bombLocX <= (zombies[i].zombieLocX + 100) && bomb.bombLocY >= (zombies[i].zombieLocY - 100) && bomb.bombLocY <= (zombies[i].zombieLocY + 100)){
+			zombies.splice(i, 1);
 		}
 	}
 }
@@ -188,7 +220,6 @@ function updateZombie(){
 }
 
 function draw(){
-	console.log(gameActive);
 	if(gameActive === true){
 		context.drawImage(bgImage1, 0, 0);
 		context.drawImage(bgImage2, 482, 0);
@@ -196,13 +227,17 @@ function draw(){
 		context.drawImage(bgImage4, 0, 447);
 		context.drawImage(hero, heroLoc.x, heroLoc.y);
 		context.drawImage(goblin, goblinLoc.x, goblinLoc.y);
+		for(var i = 0; i < bombs.length; i++){
+			context.drawImage(bombs[i].bomb, bombs[i].bombLocX, bombs[i].bombLocY);
+		}
 		for(var i = 0; i < clocks.length; i++){
 			context.drawImage(clocks[i].clock, clocks[i].clockLocX, clocks[i].clockLocY);
 		}	
 		for(var i = 0; i < zombies.length; i++){
 			context.drawImage(zombies[i].zombie, zombies[i].zombieLocX, zombies[i].zombieLocY);
 		}
-		updateClock();	
+		updateClock();
+		updateBomb();	
 		updateHero();
 		updateGoblin();
 		updateZombie();
@@ -214,6 +249,8 @@ function reset(){
 	context.clearRect(0, 0, canvas.width, canvas.height);
 	clocks = [];
 	zombies = [];
+	bombs = [];
+	bombInv = 3;
 	heroLoc.x = 482;
 	heroLoc.y = 447;
 	gobSpeed = 1;
