@@ -17,13 +17,13 @@
 ## Screenshots
 
 ### Main page:
-![alt text](https://raw.githubusercontent.com/tlobaugh/canvasgame/master/img/main.png)
+![alt text](https://raw.githubusercontent.com/TristanLobaugh/canvasgame/master/img/main.png)
 
 ### Zombies!
-![alt text](https://raw.githubusercontent.com/tlobaugh/canvasgame/master/img/zombies.png)
+![alt text](https://raw.githubusercontent.com/TristanLobaugh/canvasgame/master/img/zombies.png)
 
 ### Explosions!
-![alt text](https://raw.githubusercontent.com/tlobaugh/canvasgame/master/img/clock_explosion.png)
+![alt text](https://raw.githubusercontent.com/TristanLobaugh/canvasgame/master/img/clock_explosion.png)
 
 ##Code Examples
 
