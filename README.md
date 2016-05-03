@@ -1,4 +1,4 @@
-# Canvas Game
+# Canvas Game Goblins and Zombies!
 
 ### Game using HTML, CSS, JavaScript using the canvas element and keeps a "High Score" stored in the users local storage.
 
